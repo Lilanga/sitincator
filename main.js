@@ -107,7 +107,10 @@ app.on('ready', () => {
 
           ipcMain.on('calendar:list-events', event => client.listEvents()
             .then(items => event.sender.send('calendar:list-events-success', items))
-            .catch(error => event.sender.send('calendar:list-events-failure', error))
+            .catch(error => {
+              console.error(error);
+              event.sender.send('calendar:list-events-failure', error);
+            })
           );
 
           ipcMain.on('calendar:status-event', event => client.statusEvent()
