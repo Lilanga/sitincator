@@ -1,9 +1,5 @@
 # Sitincator
 
-## Warning
-**We are no longer actively maintaining this. You are welcome to fork the repository and contribute there.**
-
-
 ![Sitincator](https://github.com/simplificator/sitincator/raw/gh-pages/images/sitincator.png)
 
 `Sitincator` is [Simplificator's](https://www.simplificator.com) meeting room display system. It consists of a React/Electron app running on a Raspberry Pi 3, which is connected to a touch screen display.
@@ -14,9 +10,9 @@ The system shows the current occupancy of the meeting room on the display, all m
 
 Required components for the displays:
 
-- Original Raspberry Pi touch screen 7”, https://www.pi-shop.ch/raspberry-pi-7-touch-screen-display-mit-10-finger-capacitive-touch
-- Raspberry Pi 3, https://www.pi-shop.ch/raspberry-pi-3
-- Display case for the Raspberry Pi and its touchscreen, https://www.pi-shop.ch/raspberry-pi-7-touchscreen-display-frame-noir
+- Original Raspberry Pi touch screen 7”, <https://www.pi-shop.ch/raspberry-pi-7-touch-screen-display-mit-10-finger-capacitive-touch>
+- Raspberry Pi 3, <https://www.pi-shop.ch/raspberry-pi-3>
+- Display case for the Raspberry Pi and its touchscreen, <https://www.pi-shop.ch/raspberry-pi-7-touchscreen-display-frame-noir>
 
 ## Software
 
@@ -51,9 +47,9 @@ Node requirement: `v6`
     cd sitincator
     npm install
 
-Follow the instructions above (`Installation on the Raspberry Pi -> Configuration`). 
+Follow the instructions above (`Installation on the Raspberry Pi -> Configuration`).
 
-Start webpack (note that this process is blocking, you could also start it in the background): 
+Start webpack (note that this process is blocking, you could also start it in the background):
 
     npm run watch
 
@@ -90,7 +86,7 @@ Create a script `start_meeting_room_app` using the following command to start Si
     DISPLAY=":0" xset s off
     DISPLAY=":0" xset -dpms
     DISPLAY=":0" xset s noblank
-    
+
     cd /home/pi/Sitincator/
     DISPLAY=":0" /home/pi/Sitincator/Sitincator --disable-pinch
     EOF
@@ -121,4 +117,3 @@ To save some power, add the following cronjobs to automatically turn the display
     chmod +x /home/pi/display_turn_off
 
 [1]: https://developers.google.com/google-apps/calendar/quickstart/nodejs#step_1_turn_on_the_api_name
-
