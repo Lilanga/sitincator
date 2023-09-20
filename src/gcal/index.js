@@ -49,7 +49,7 @@ function oauth2TokenInstructions(oauth2Client) {
       .then(token => {
         createDirectory(CREDENTIALS_DIR);
         fs.writeFile(API_TOKEN, token, error => {
-          if(error)
+          if (error)
             reject(error);
           else
             resolve(token);
@@ -70,11 +70,15 @@ function createDirectory(directory) {
 
 function storeToken(token) {
   createDirectory(CREDENTIALS_DIR);
-  fs.writeFile(SITINCATOR_TOKEN, JSON.stringify(token));
+  fs.writeFile(SITINCATOR_TOKEN, JSON.stringify(token),(err) => {
+    if (err)
+      console.log(err);
+  });
 }
 
-function getAccessToken(client, code) {
+function getAccessToken(client, codebuffer) {
   return new Promise((resolve, reject) => {
+    const code = codebuffer.toString();
     client.getToken(code, (err, token) => {
       if (err) {
         console.log('Error while trying to retrieve access token with code', code, err);
@@ -122,12 +126,18 @@ exports.GCal = class GCal {
       const clientSecret = credentials.installed.client_secret;
       const clientId = credentials.installed.client_id;
       const redirectUrl = credentials.installed.redirect_uris[0];
-      const auth = new googleAuth();
-      const oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl);
+      const oauth2Client = new googleAuth.OAuth2Client(clientId, clientSecret, redirectUrl);
+
       return readOauth2Token(oauth2Client).then(token => {
         oauth2Client.credentials = token;
         return new Client(_calendarId, oauth2Client);
       });
+      //      const auth = new googleAuth();
+      //      const oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl);
+      //      return readOauth2Token(oauth2Client).then(token => {
+      //        oauth2Client.credentials = token;
+      //        return new Client(_calendarId, oauth2Client);
+      //      });
     }).catch(function(error) {
       console.log(error);
       exit(1);

@@ -1,4 +1,4 @@
-const google = require('googleapis');
+const { google } = require('googleapis');
 
 let _auth, _calendarId;
 const calendar = google.calendar('v3');
