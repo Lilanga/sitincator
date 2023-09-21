@@ -11,27 +11,29 @@ module.exports = {
   },
 
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
         loader: 'babel-loader',
         exclude: /node_modules/,
-        query: {
-          presets: ['es2015', 'stage-0', 'react']
+        options: {
+          presets: ['@babel/preset-env', '@babel/preset-react']
         }
       },
       {
         test: /\.scss$/,
-        loader: 'style-loader!css-loader!resolve-url-loader!sass-loader'
+        use: ['style-loader','css-loader','resolve-url-loader','sass-loader']
       },
       {
         test: /\.(otf|eot|svg|ttf|woff|woff2)$/,
-        loader: 'file-loader?name=fonts/[name].[ext]'
+        generator: {
+          filename: './fonts/[name][ext]',
+        },
       }
     ]
   },
 
   target: 'electron-renderer',
 
-  devtool: 'eval-sourcemap',
+  devtool: 'eval-source-map',
 };

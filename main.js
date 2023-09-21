@@ -28,7 +28,7 @@ function writeConfiguration(calendar_id) {
     let configuration = { calendar_id: calendar_id, title: "" };
 
     fs.writeFile(SITINCATOR_CONFIG, JSON.stringify(configuration), error => {
-      if(error)
+      if (error)
         reject(error);
       else
         resolve(configuration);
@@ -65,7 +65,7 @@ function readConfiguration() {
     readConfigurationFile()
       .then(configuration => resolve(configuration))
       .catch(error => {
-        if(error.code != 'ENOENT')
+        if (error.code != 'ENOENT')
           reject(error);
         else {
           askForCalendarId()
@@ -77,8 +77,13 @@ function readConfiguration() {
   });
 }
 
-function createWindow () {
-  win = new BrowserWindow({width: 480, height: 800});
+function createWindow() {
+  win = new BrowserWindow({
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+    }, width: 480, height: 800
+  });
 
   if (process.env.NODE_ENV !== 'development')
     win.setFullScreen(true);
@@ -119,7 +124,7 @@ app.on('ready', () => {
             client.insertEvent(duration)
               .then(response => event.sender.send('calendar:quick-reservation-success', response))
               .catch(error => event.sender.send('calendar:quick-reservation-failure', error));
-            }
+          }
           );
 
           ipcMain.on('calendar:finish-reservation', (event, eventId) => {

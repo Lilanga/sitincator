@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "NODE_ENV=development ./node_modules/.bin/electron .",
     "start-prod": "NODE_ENV=production ./node_modules/.bin/electron .",
-    "build-dev": "node_modules/.bin/webpack",
+    "build-dev": "NODE_ENV=development node_modules/.bin/webpack",
     "build": "NODE_ENV=production node_modules/.bin/webpack -p --config webpack.prod.config.js",
     "watch": "./node_modules/.bin/webpack-dev-server --hot --inline",
     "pack": "./node_modules/.bin/electron-packager . Sitincator",
@@ -24,12 +24,12 @@
   },
   "homepage": "https://github.com/simplificator/sitincator#readme",
   "devDependencies": {
+    "@babel/preset-env": "^7.22.20",
+    "@babel/preset-react": "^7.22.15",
     "babel-core": "^6.26.3",
     "babel-loader": "^9.1.3",
     "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-preset-es2015": "^6.16.0",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "css-loader": "^6.8.1",
     "electron-packager": "^17.1.2",
     "file-loader": "^6.2.0",
@@ -41,6 +41,7 @@
     "sass-loader": "13.3.2",
     "style-loader": "^3.3.3",
     "webpack": "5.88.2",
+    "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
