@@ -1,8 +1,9 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { ipcRenderer } from 'electron';
 import moment from 'moment';
 import EventDuration from './event_duration';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import { CSSTransition } from 'react-transition-group';
 import { isCurrent, timeLeft, isBeforeNow, isAfterNow } from '../util';
 
 export default class Schedule extends Component {
@@ -77,12 +78,10 @@ export default class Schedule extends Component {
     }
 
     return (
-      <ReactCSSTransitionGroup
-        transitionName="fade"
-        transitionAppear={true}
-        transitionAppearTimeout={500}
-        transitionEnterTimeout={500}
-        transitionLeaveTimeout={300}>
+      <CSSTransition
+      classNames="fade"
+      appear={true}
+      timeout={ {exit:300, enter:500, appear:500} }>
         <div className="flex-container schedule">
           <h3 className="schedule-header">{(moment().format("dddd, DD.MM.YYYY")).toUpperCase()}</h3>
           <div className="schedule-event-list">
@@ -91,7 +90,7 @@ export default class Schedule extends Component {
             </div>
           </div>
         </div>
-      </ReactCSSTransitionGroup>
+      </CSSTransition>
     );
   }
 }

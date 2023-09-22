@@ -1,7 +1,8 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import EventDetails from './event_details';
 import classNames from 'classnames';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import { CSSTransition } from 'react-transition-group';
 import Free from './free';
 import Booked from './booked';
 import { isEmpty } from 'lodash/lang';
@@ -66,14 +67,12 @@ export default class Status extends Component {
 
     return (
       <div className={rootClasses}>
-        <ReactCSSTransitionGroup
-          transitionName="fade"
-          transitionAppear={true}
-          transitionAppearTimeout={500}
-          transitionEnterTimeout={500}
-          transitionLeaveTimeout={300}>
+        <CSSTransition
+          classNames="fade"
+          timeout={ {exit:300, enter:500, appear:500} }
+          appear={true}>
           {statusComponent}
-        </ReactCSSTransitionGroup>
+        </CSSTransition>
         <EventDetails
           event={isEmpty(currentEvent) ? nextEvent : currentEvent}
           isCurrent={isCurrent}

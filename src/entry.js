@@ -1,4 +1,4 @@
-import { Router, Route, Link, hashHistory, IndexRoute } from 'react-router';
+import { Route, HashRouter } from 'react-router-dom';
 import React from 'react';
 import { render } from 'react-dom';
 import Status from './components/status';
@@ -10,12 +10,16 @@ import '../static/sass/main.scss';
 
 window.location.hash = 'status';
 
-render((
-  <Router history={hashHistory}>
-    <Route path="/status" component={App}>
-      <IndexRoute component={Status} />
-      <Route path="/schedule" component={Schedule} />
-      <Route path="/check_connection" component={CheckConnection} />
-    </Route>
-  </Router>
-), document.getElementById('react-root'));
+class MainComponent extends React.Component {
+  render() {
+    return <HashRouter>
+        <Route path="/status" component={App}>
+          <Route exact path="/" component={Status} />
+          <Route path="/schedule" component={Schedule} />
+          <Route path="/check_connection" component={CheckConnection} />
+        </Route>
+      </HashRouter>;
+  }
+}
+
+render(<MainComponent />, document.getElementById('react-root'));

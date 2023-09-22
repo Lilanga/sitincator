@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { browserHistory, Router, Route, IndexRoute, Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import { ipcRenderer } from 'electron';
 import { currentEvent, nextEvent, nextEventIdx } from './util';
 import { STATUS_UPDATE_INTERVAL_MS, MILLISECONDS_PER_MINUTE } from './constants';

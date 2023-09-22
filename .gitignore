@@ -53,3 +53,5 @@ config/*.json
 Sitincator-linux-armv7l
 
 *.swp
+.DS_Store
+

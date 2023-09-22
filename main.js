@@ -79,10 +79,12 @@ function readConfiguration() {
 
 function createWindow() {
   win = new BrowserWindow({
+    width: 480,
+    height: 800,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-    }, width: 480, height: 800
+    }
   });
 
   if (process.env.NODE_ENV !== 'development')
