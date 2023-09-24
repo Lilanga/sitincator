@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { ipcRenderer } from 'electron';
+import Status from './components/status';
+import Schedule from './components/schedule';
+import CheckConnection from './components/check_connection';
 import { currentEvent, nextEvent, nextEventIdx } from './util';
 import { STATUS_UPDATE_INTERVAL_MS, MILLISECONDS_PER_MINUTE } from './constants';
 
@@ -14,6 +17,10 @@ function isStatusView() {
 
 const isCheckConnectionView = () => {
   return /check_connection/.test(currentHash());
+}
+
+const isScheduleView = () => {
+  return /schedule/.test(currentHash());
 }
 
 // Disable pinch zooming
@@ -34,7 +41,7 @@ export default class App extends Component {
         window.location.hash = 'status';
       }
       events = this.processEvents(events);
-      this.setState({events})
+      this.setState({ events })
     });
     ipcRenderer.on('calendar:list-events-failure', (event, error) => {
       window.location.hash = 'check_connection';
@@ -59,7 +66,7 @@ export default class App extends Component {
   }
 
   markAllDayEvents(events) {
-    return events.map((event) => {
+    return events?.map((event) => {
       if (event.start.dateTime) {
         return {
           ...event,
@@ -72,8 +79,8 @@ export default class App extends Component {
         end.setHours(0);
         return {
           ...event,
-          start: {...event.start, dateTime: start},
-          end: {...event.end, dateTime: end},
+          start: { ...event.start, dateTime: start },
+          end: { ...event.end, dateTime: end },
           isAllDay: true,
         }
       }
@@ -81,7 +88,7 @@ export default class App extends Component {
   }
 
   removeUnconfirmedEvents(events) {
-    return events.filter(event => {
+    return events?.filter(event => {
       return event.status === 'confirmed';
     });
   }
@@ -110,34 +117,28 @@ export default class App extends Component {
 
   render() {
     const { events } = this.state;
-    const footerText = isStatusView() ?
-      <span>full schedule <i className="icon icon-arrow-right"></i></span> :
-      <span><i className="icon icon-arrow-left"></i> back to booking</span>;
-
+    const props = { events, currentEvent: currentEvent(events), nextEvent: nextEvent(events), nextEventIdx: nextEventIdx(events), onQuickReservation: this.handleQuickReservation.bind(this), onFinishReservation: this.handleFinishReservation.bind(this), onShowSchedule: this.handleShowSchedule.bind(this) };
     return (
       <div id="app">
-        {React.cloneElement(this.props.children, {
-          events,
-          currentEvent: currentEvent(events),
-          nextEvent: nextEvent(events),
-          nextEventIdx: nextEventIdx(events),
-          onQuickReservation: this.handleQuickReservation.bind(this),
-          onFinishReservation: this.handleFinishReservation.bind(this),
-          onShowSchedule: this.handleShowSchedule.bind(this)})
-        }
-        {this.drawFooter(footerText)}
+        {isStatusView() ? <Status {...props} /> : isScheduleView() ? <Schedule {...props} /> : <CheckConnection {...props} />}
+        {this.drawFooter()}
       </div>
     )
   }
 
-  drawFooter(footerText) {
-    if(isCheckConnectionView())
+  drawFooter() {
+    if (isCheckConnectionView())
       return '';
+
+    const isStatus = isStatusView();
+    const footerText = isStatus ?
+      <span>full schedule <i className="icon icon-arrow-right"></i></span> :
+      <span><i className="icon icon-arrow-left"></i> back to booking</span>;
 
     return (
       <footer>
         <div className="footer">
-          {isStatusView() ? <Link to="/schedule">{footerText}</Link> : <Link to="/status">{footerText}</Link>}
+          {isStatus ? <Link to="/schedule">{footerText}</Link> : <Link to="/status">{footerText}</Link>}
         </div>
       </footer>
     );

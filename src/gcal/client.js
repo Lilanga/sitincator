@@ -26,7 +26,7 @@ module.exports = class Client {
         if (err) {
           reject(err);
         } else {
-          resolve(response.items);
+          resolve(response.data.items);
         }
       });
     });
@@ -73,7 +73,6 @@ module.exports = class Client {
         eventId,
         resource,
       }, (err, response) => {
-        console.log(err, response);
         if (err) {
           reject(err);
         } else {

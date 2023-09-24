@@ -36,7 +36,7 @@ export default class Status extends Component {
     const { currentEvent } = this.props;
     const now = Date.now();
 
-    return Object.keys(currentEvent).length > 0
+    return Object.keys(currentEvent || {}).length > 0
       && Date.parse(currentEvent.start.dateTime) <= now
       && Date.parse(currentEvent.end.dateTime) > now;
   }
@@ -49,7 +49,6 @@ export default class Status extends Component {
       'expanded': detailsExpanded,
       'booked': this.isBooked(),
     });
-
     let statusComponent = this.isBooked() ?
       <Booked
         onClick={() => onFinishReservation(currentEvent.id)}

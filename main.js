@@ -1,4 +1,5 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, session, BrowserWindow, ipcMain } = require('electron');
+require('@electron/remote/main').initialize();
 
 const google = require('googleapis');
 const gcal = require('./src/gcal');
@@ -84,6 +85,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
+      enableRemoteModule: true
     }
   });
 
@@ -99,6 +101,8 @@ function createWindow() {
     // Dereference the window object
     win = null;
   });
+
+  require("@electron/remote/main").enable(win.webContents);
 }
 
 app.on('ready', () => {
@@ -113,8 +117,8 @@ app.on('ready', () => {
           global.calendarName = configuration.title;
 
           ipcMain.on('calendar:list-events', event => client.listEvents()
-            .then(items => event.sender.send('calendar:list-events-success', items))
-            .catch(error => event.sender.send('calendar:list-events-failure', error))
+            .then(items => { event.sender.send('calendar:list-events-success', items);})
+            .catch(error => {event.sender.send('calendar:list-events-failure', error);})
           );
 
           ipcMain.on('calendar:status-event', event => client.statusEvent()
@@ -124,8 +128,8 @@ app.on('ready', () => {
 
           ipcMain.on('calendar:quick-reservation', (event, duration) => {
             client.insertEvent(duration)
-              .then(response => event.sender.send('calendar:quick-reservation-success', response))
-              .catch(error => event.sender.send('calendar:quick-reservation-failure', error));
+              .then(response => { event.sender.send('calendar:quick-reservation-success', response)})
+              .catch(error => { event.sender.send('calendar:quick-reservation-failure', error)});
           }
           );
 
@@ -135,9 +139,9 @@ app.on('ready', () => {
               .catch(error => event.sender.send('calendar:finish-reservation-failure', error));
           });
         })
-        .catch(() => process.exit());
+        .catch((error) => {console.log(`error: ${error}`); process.exit()});
     }).catch(error => {
-      console.log(error);
+      console.error(error);
       process.exit();
     });
 });
