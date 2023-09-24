@@ -17,7 +17,7 @@
     text-align: center;
     margin: 27px 0 12px 0;
     font-size: 22px;
-    font-family: 'Mark Pro Book';
+    font-family: "Mark Pro Book";
     color: $primary-color;
   }
 
@@ -39,6 +39,20 @@
     font-size: 20px;
     font-weight: bold;
     margin: 40px 0 20px 0;
+  }
+
+  .event-details-description {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 40px 20px 20px 20px;
+    text-align: center;
+  }
+
+  .event-details-qr {
+    height: "auto";
+    margin: "0 auto";
+    max-width: 128px;
+    width: "100%";
   }
 
   .event-details-attendees {

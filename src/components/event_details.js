@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import QRCode from "react-qr-code";
 import Button from './button';
 import classNames from 'classnames';
 import { isEmpty } from 'lodash/lang';
@@ -63,14 +64,23 @@ export default class EventDetails extends Component {
 
     return (
       <div className='event-details flex-container'>
-        <Button icon="arrow-up" className={btnClasses} handleClick={this.handleExpandDetails.bind(this)}/>
+        <Button icon="arrow-up" className={btnClasses} handleClick={this.handleExpandDetails.bind(this)} />
         <h3 className="event-details-status">
           {isCurrent ? 'CURRENT MEETING' : 'COMING UP'}
         </h3>
         <h3 className="event-details-name">{event.summary}</h3>
+        <p className="event-details-description">{event.description}</p>
         <EventDuration event={event} />
         <p className="event-details-creator">{event.creator.displayName || event.creator.email}</p>
         <ul className="event-details-attendees">{this.attendees()}</ul>
+        <div className="event-details-qr">
+          <QRCode
+            size={256}
+            style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+            value={event.htmlLink}
+            viewBox={`0px 0px 256px 256px`}
+          />
+        </div>
       </div>
     );
   }
